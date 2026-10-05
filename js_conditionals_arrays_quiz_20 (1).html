@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilingual Quiz: JS Conditionals & Arrays (20 Questions) | اختبار الجافاسكريبت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent: #f59e0b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        code, pre {
+            font-family: 'Fira Code', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.92em;
+            color: #0284c7;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+            color: white;
+            padding: 26px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.25);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 1.7rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #e0f2fe;
+            direction: ltr;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-val.high {
+            color: var(--accent);
+        }
+
+        /* Index Button */
+        .btn-index {
+            background: #f0f9ff;
+            color: var(--primary);
+            border: 2px solid #bae6fd;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-index:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        /* Question Box */
+        .q-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 20px -3px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .q-badge {
+            background: #f0f9ff;
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .q-text-ar {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .q-text-en {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #475569;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opt-btn {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: right;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            background: #f0f9ff;
+            border-color: #7dd3fc;
+            transform: translateX(-4px);
+        }
+
+        .opt-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--success) !important;
+        }
+
+        .opt-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+        }
+
+        .opt-ar {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .opt-en {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #64748b;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .opt-btn.correct .opt-ar, .opt-btn.correct .opt-en {
+            color: #15803d !important;
+        }
+
+        .opt-btn.wrong .opt-ar, .opt-btn.wrong .opt-en {
+            color: #991b1b !important;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+            display: none;
+            background: #f1f5f9;
+            border-right: 5px solid var(--primary);
+        }
+
+        .exp-en {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            margin-top: 6px;
+            font-size: 0.92rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-nav:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* Modal Index */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 26px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            animation: popIn 0.25s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+
+        .close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+        }
+
+        .grid-index {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .index-pill {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 10px 4px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #334155;
+        }
+
+        .index-pill:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+            transform: translateY(-2px);
+        }
+
+        .index-pill.active {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+            font-weight: 900;
+        }
+
+        .index-pill.solved-correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+        }
+
+        .index-pill.solved-wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+        }
+
+        /* Results Card */
+        .results-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .trophy {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #f0f9ff;
+            border: 6px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .score-num {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .btn-restart {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.2s;
+        }
+
+        .btn-restart:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>اختبار JavaScript: الشروط والمصفوفات (20 سؤالاً)</h1>
+        <p>Bilingual Quiz: JavaScript Conditionals, Modulo & Array Methods</p>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">رقم السؤال / Question</span>
+            <div><span class="stat-val" id="qCurrent">1</span> / 20</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">أول محاولة / 1st Score 🎯</span>
+            <span class="stat-val" style="color: #0284c7;" id="firstScore">--</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">الدرجة الحالية / Score</span>
+            <span class="stat-val" id="score">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">أعلى نتيجة / High Score 🏆</span>
+            <span class="stat-val high" id="highScore">0</span>
+        </div>
+        <div>
+            <button class="btn-index" onclick="openIndexModal()">
+                <span>📑</span>
+                <span>فهرس الأسئلة (1-20)</span>
+            </button>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- Question Box -->
+    <div class="q-card" id="quizCard">
+        <div class="q-header">
+            <span class="q-badge" id="topicBadge">React Concept</span>
+            <span style="color: var(--text-muted); font-size: 0.9rem;" id="qStatusIndicator">لم يُجب بعد / Not answered</span>
+        </div>
+        
+        <div class="q-text-ar" id="questionTextAr">جاري تحميل السؤال...</div>
+        <div class="q-text-en" id="questionTextEn">Loading question...</div>
+        
+        <div class="options-list" id="optionsContainer"></div>
+        
+        <div class="explanation" id="explanationText"></div>
+
+        <div class="actions">
+            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled>➡️ السابق / Prev</button>
+            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">التالي / Next ⬅️</button>
+        </div>
+    </div>
+
+    <!-- Results Box -->
+    <div class="results-card" id="resultsCard">
+        <div class="trophy" id="trophyIcon">🎉</div>
+        <h2 id="resultMsg" style="font-size: 1.8rem; margin-bottom: 8px;">أحسنت صنعاً!</h2>
+        <p id="resultSubtitle" style="color: var(--text-muted);">You completed all 20 JavaScript questions!</p>
+        
+        <div class="score-circle">
+            <div class="score-num" id="finalScore">0</div>
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">/ 20</span>
+        </div>
+
+        <p id="highScoreNotice" style="font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-top: 10px;"></p>
+
+        <button class="btn-restart" onclick="restartQuiz()">إعادة الاختبار من البداية 🔄</button>
+    </div>
+</div>
+
+<!-- Modal Index Window -->
+<div class="modal-overlay" id="indexModal" onclick="closeIndexModalOnOutside(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📑 فهرس أسئلة JavaScript (Question Index)</h3>
+            <button class="close-btn" onclick="closeIndexModal()">✕</button>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background: #22c55e;"></div><span>إجابة صحيحة</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>إجابة خاطئة</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #0284c7;"></div><span>السؤال الحالي</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #e2e8f0; border: 1px solid #cbd5e1;"></div><span>لم يُحل بعد</span></div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">انقر على أي رقم سؤال للانتقال إليه مباشرة:</p>
+        
+        <div class="grid-index" id="gridIndexContainer"></div>
+    </div>
+</div>
+
+<script>
+    // 20 Questions covering all topics from the code snippets with balanced answer distribution
+    const questions = [
+        {
+            topic: "JavaScript - Modulo Operator (%)",
+            ar_q: "ما وظيفة المعامل % في جملة الشرط: if (number % 2 == 0)؟",
+            en_q: "What is the function of the % operator in the condition: if (number % 2 == 0)?",
+            options: [
+                { ar: "حساب النسبة المئوية للعدد", en: "Calculates the percentage of the number" },
+                { ar: "قسمة العدد على 2 بصورة عادية", en: "Standard division of the number by 2" },
+                { ar: "مضاعفة العدد مرتين", en: "Doubles the number" },
+                { ar: "حساب باقي قسمة العدد على 2 لتحديد إذا كان زوجياً", en: "Calculates the remainder of division by 2 to check if it's even" }
+            ],
+            correct: 3,
+            exp_ar: "المعامل % هو معامل باقي القسمة (Modulo)؛ فإذا كان باقي قسمة العدد على 2 يساوي 0 فالعدد زوجي (Even).",
+            exp_en: "The % (remainder/modulo) operator returns the remainder; if number % 2 === 0, the number is even."
+        },
+        {
+            topic: "JavaScript - Number Conversion",
+            ar_q: "لماذا تم تغليف دالة prompt بـ Number هكذا: Number(prompt('...'))؟",
+            en_q: "Why is the prompt function wrapped with Number: Number(prompt('...'))?",
+            options: [
+                { ar: "لحفظ القيمة في الذاكرة العشوائية", en: "To store the value in RAM" },
+                { ar: "لأن prompt ترجع نصاً (String) دائماً ونحتاج تحويله لرقم لإجراء العمليات الحسابية", en: "Because prompt always returns a String, which must be converted to a Number for arithmetic" },
+                { ar: "لمنع المستخدم من إدخال أي شيء", en: "To prevent the user from typing anything" },
+                { ar: "لتوليد رقم عشوائي تلقائياً", en: "To automatically generate a random number" }
+            ],
+            correct: 1,
+            exp_ar: "دالة prompt() ترجع المدخلات كسلسلة نصية (String)، لذا نستخدم دالة Number() لتحويلها إلى رقم.",
+            exp_en: "prompt() returns user input as a string; Number() explicitly casts it to a numeric type."
+        },
+        {
+            topic: "JavaScript - Array Indexing",
+            ar_q: "إذا كان لدينا: let fruits = ['apple', 'banana', 'orange']، فما ناتج طباعة fruits[1]؟",
+            en_q: "Given let fruits = ['apple', 'banana', 'orange'], what is the output of console.log(fruits[1])?",
+            options: [
+                { ar: "undefined", en: "undefined" },
+                { ar: "'orange'", en: "'orange'" },
+                { ar: "'banana'", en: "'banana'" },
+                { ar: "'apple'", en: "'apple'" }
+            ],
+            correct: 2,
+            exp_ar: "فهارس المصفوفات في جافاسكريبت تبدأ من الصفر (Zero-based): العنصر 0 هو 'apple' والعنصر 1 هو 'banana'.",
+            exp_en: "JavaScript arrays are zero-indexed; index 0 is 'apple' and index 1 is 'banana'."
+        },
+        {
+            topic: "JavaScript - push Method",
+            ar_q: "ما وظيفة الدالة fruits.push('kiwi') عند تطبيقها على المصفوفة؟",
+            en_q: "What does fruits.push('kiwi') do when executed on an array?",
+            options: [
+                { ar: "إضافة العنصر 'kiwi' في نهاية المصفوفة", en: "Appends the element 'kiwi' to the end of the array" },
+                { ar: "حذف أول عنصر من المصفوفة", en: "Removes the first element from the array" },
+                { ar: "إضافة العنصر 'kiwi' في بداية المصفوفة", en: "Prepends 'kiwi' to the start of the array" },
+                { ar: "استبدال جميع العناصر بـ 'kiwi'", en: "Replaces all elements with 'kiwi'" }
+            ],
+            correct: 0,
+            exp_ar: "الدالة push() تضيف عنصراً جديداً إلى نهاية المصفوفة وتزيد طولها.",
+            exp_en: "The .push() method appends one or more elements to the end of an array."
+        },
+        {
+            topic: "JavaScript - pop Method",
+            ar_q: "ماذا تفعل الدالة fruits.pop() عند استدعائها؟",
+            en_q: "What does calling fruits.pop() do to an array?",
+            options: [
+                { ar: "تفريغ المصفوفة بالكامل", en: "Empties the entire array" },
+                { ar: "حذف آخر عنصر من نهاية المصفوفة وإرجاعه", en: "Removes the last element from the end and returns it" },
+                { ar: "ترتيب عناصر المصفوفة تنازلياً", en: "Sorts the array descending" },
+                { ar: "حذف أول عنصر من بداية المصفوفة", en: "Removes the first element from the beginning" }
+            ],
+            correct: 1,
+            exp_ar: "تقوم الدالة pop() بحذف العنصر الأخير من المصفوفة وتقليل طولها بمقدار 1.",
+            exp_en: "The .pop() method removes the last element from an array."
+        },
+        {
+            topic: "JavaScript - unshift Method",
+            ar_q: "لإضافة عنصر جديد في بداية المصفوفة (أول عنصر)، ما الدالة المستخدمة؟",
+            en_q: "To insert a new element at the very beginning of an array, which method is used?",
+            options: [
+                { ar: "fruits.push()", en: "fruits.push()" },
+                { ar: "fruits.unshift('kiwi')", en: "fruits.unshift('kiwi')" },
+                { ar: "fruits.shift()", en: "fruits.shift()" },
+                { ar: "fruits.insert()", en: "fruits.insert()" }
+            ],
+            correct: 1,
+            exp_ar: "تُستخدم unshift() لإضافة عنصر أو أكثر في بداية المصفوفة وإزاحة باقي العناصر للأمام.",
+            exp_en: "The .unshift() method adds one or more elements to the beginning of an array."
+        },
+        {
+            topic: "JavaScript - shift Method",
+            ar_q: "ما وظيفة الدالة fruits.shift()؟",
+            en_q: "What is the primary function of fruits.shift()?",
+            options: [
+                { ar: "حذف آخر عنصر من المصفوفة", en: "Removes the last item in the array" },
+                { ar: "حذف عنصر عشوائي", en: "Removes a random element" },
+                { ar: "عكس ترتيب عناصر المصفوفة", en: "Reverses array order" },
+                { ar: "حذف أول عنصر من بداية المصفوفة وإزاحة الباقي", en: "Removes the first element from the beginning and shifts remaining items" }
+            ],
+            correct: 3,
+            exp_ar: "الدالة shift() تحذف العنصر الأول ذو الفهرس 0 وتعيد ضبط فهارس بقية العناصر.",
+            exp_en: "The .shift() method removes the first element from an array."
+        },
+        {
+            topic: "JavaScript - indexOf Method",
+            ar_q: "في مصفوفة: ['eyad', 'mostafa', 'yassin', 'aser']، ما ناتج students.indexOf('aser')؟",
+            en_q: "In ['eyad', 'mostafa', 'yassin', 'aser'], what is the output of students.indexOf('aser')?",
+            options: [
+                { ar: "الرقم 2", en: "2" },
+                { ar: "true", en: "true" },
+                { ar: "الرقم 3", en: "3" },
+                { ar: "الرقم 4", en: "4" }
+            ],
+            correct: 2,
+            exp_ar: "يبدأ العد من 0: eyad(0)، mostafa(1)، yassin(2)، aser(3).",
+            exp_en: "With zero-based indexing: eyad is 0, mostafa is 1, yassin is 2, and aser is 3."
+        },
+        {
+            topic: "JavaScript - indexOf Not Found",
+            ar_q: "ماذا تُرجع الدالة students.indexOf('omar') إذا كان العنصر غير موجود في المصفوفة؟",
+            en_q: "What does students.indexOf('omar') return if the item is not found in the array?",
+            options: [
+                { ar: "الرقم 0", en: "0" },
+                { ar: "القيمة null", en: "null" },
+                { ar: "الرقم -1", en: "-1" },
+                { ar: "القيمة false", en: "false" }
+            ],
+            correct: 2,
+            exp_ar: "إذا لم تعثر دالة indexOf() على العنصر في المصفوفة، فإنها تُرجع دائماً -1.",
+            exp_en: "If the specified element is not present in the array, .indexOf() returns -1."
+        },
+        {
+            topic: "JavaScript - includes Method",
+            ar_q: "ما ناتج التعبير: students.includes('omar') إذا كانت المصفوفة لا تحتوي على هذا الاسم؟",
+            en_q: "What is the return value of students.includes('omar') if the name does not exist in the array?",
+            options: [
+                { ar: "false", en: "false" },
+                { ar: "undefined", en: "undefined" },
+                { ar: "الرقم -1", en: "-1" },
+                { ar: "true", en: "true" }
+            ],
+            correct: 0,
+            exp_ar: "ترجع includes() قيمة منطقية بوليانية (true أو false) فقط بحسب وجود العنصر.",
+            exp_en: "The .includes() method returns a boolean (true or false) indicating whether an item exists."
+        },
+        {
+            topic: "JavaScript - splice Removal",
+            ar_q: "ماذا تفعل التعليمة: students.splice(2, 1) على المصفوفة؟",
+            en_q: "What does students.splice(2, 1) do to the array?",
+            options: [
+                { ar: "نسخ العنصر رقم 2 مرة واحدة", en: "Copies item at index 2 once" },
+                { ar: "حذف عنصر واحد فقط بدءاً من الفهرس 2 (حذف 'yassin')", en: "Deletes 1 item starting at index 2 (removes 'yassin')" },
+                { ar: "إضافة العنصرين 2 و 1 إلى المصفوفة", en: "Adds 2 and 1 to the array" },
+                { ar: "حذف عنصرين بدءاً من الفهرس 1", en: "Deletes 2 items starting from index 1" }
+            ],
+            correct: 1,
+            exp_ar: "المعامل الأول 2 هو موقع البداية، والمعامل الثاني 1 هو عدد العناصر المراد حذفها.",
+            exp_en: "In splice(2, 1), 2 is the starting index and 1 is the delete count."
+        },
+        {
+            topic: "JavaScript - splice Replacement",
+            ar_q: "في الكود: students.splice(2, 1, 'omar', 'ahmed')، ما الذي يحدث للمصفوفة؟",
+            en_q: "In students.splice(2, 1, 'omar', 'ahmed'), what modification happens to the array?",
+            options: [
+                { ar: "حذف المصفوفة بالكامل واستبدالها بالاسمين", en: "Clears the array and replaces it with the two names" },
+                { ar: "حدوث خطأ لأن splice لا تقبل أكثر من معاملين", en: "Throws an error because splice only takes 2 arguments" },
+                { ar: "حذف عنصر واحد عند الفهرس 2 وإدراج 'omar' و 'ahmed' مكانه", en: "Removes 1 element at index 2 and inserts 'omar' and 'ahmed' in its place" },
+                { ar: "إضافة الاسمين في نهاية المصفوفة", en: "Appends both names to the end" }
+            ],
+            correct: 2,
+            exp_ar: "تسمح splice بحذف عدد من العناصر وإدراج عناصر بديلة مكانها بدءاً من نفس الفهرس.",
+            exp_en: "splice can simultaneously remove elements and insert new items at the specified index."
+        },
+        {
+            topic: "JavaScript - sort Method",
+            ar_q: "ما ناتج students.sort() على: ['eyad', 'mostafa', 'yassin', 'aser']؟",
+            en_q: "What is the result of students.sort() on ['eyad', 'mostafa', 'yassin', 'aser']?",
+            options: [
+                { ar: "ترتيب تنازلي من الياء إلى الألف", en: "Sorts descending from Z to A" },
+                { ar: "ترتيب الأسماء أبجدياً تصاعدياً حسب الحروف: ['aser', 'eyad', 'mostafa', 'yassin']", en: "Sorts names alphabetically ascending: ['aser', 'eyad', 'mostafa', 'yassin']" },
+                { ar: "ترتيب الأسماء حسب طول الكلمة", en: "Sorts names by character length" },
+                { ar: "عكس ترتيب الأسماء الحالي", en: "Reverses the current order" }
+            ],
+            correct: 1,
+            exp_ar: "تقوم sort() افتراضياً بترتيب السلاسل النصية ترتيباً أبجدياً تصاعدياً (Alphabetical order).",
+            exp_en: "By default, .sort() sorts strings in ascending lexicographical/alphabetical order."
+        },
+        {
+            topic: "JavaScript - Array Definition",
+            ar_q: "ما الأقواس المستخدمة لتعريف مصفوفة (Array) في لغة جافاسكريبت؟",
+            en_q: "Which brackets are used to declare an Array in JavaScript?",
+            options: [
+                { ar: "الأقواس الدائرية ( )", en: "Parentheses ( )" },
+                { ar: "الأقواس المعقوفة { }", en: "Curly braces { }" },
+                { ar: "علامات التنصيص \" \"", en: "Quotation marks \" \"" },
+                { ar: "الأقواس المربعة [ ]", en: "Square brackets [ ]" }
+            ],
+            correct: 3,
+            exp_ar: "تُعرف المصفوفات في جافاسكريبت باستخدام الأقواس المربعة [ ] (Array Literals).",
+            exp_en: "Array literals in JavaScript are created using square brackets [ ]."
+        },
+        {
+            topic: "JavaScript - Even/Odd Logic",
+            ar_q: "إذا أدخل المستخدم الرقم 7 في الكود: if (number % 2 == 0)، أي رسالة ستظهر؟",
+            en_q: "If the user inputs 7 in: if (number % 2 == 0), which alert will be displayed?",
+            options: [
+                { ar: "لا تظهر أي رسالة", en: "No alert will show" },
+                { ar: "رسالة 'Even'", en: "Alert 'Even'" },
+                { ar: "رسالة 'Odd'", en: "Alert 'Odd'" },
+                { ar: "رسالة خطأ", en: "Error alert" }
+            ],
+            correct: 2,
+            exp_ar: "باقي قسمة 7 على 2 هو 1، لذا لا يتحقق شرط الزوجي وينتقل الكود إلى else ليعرض 'Odd'.",
+            exp_en: "7 % 2 is 1 (not 0), so the if-condition fails and the else block alerts 'Odd'."
+        },
+        {
+            topic: "JavaScript - Array Length",
+            ar_q: "إذا كانت لدينا مصفوفة: let fruits = ['apple', 'banana', 'orange'] ثم نفذنا fruits.push('kiwi')، فكم يصبح طولها؟",
+            en_q: "Given fruits = ['apple', 'banana', 'orange'], after fruits.push('kiwi'), what is fruits.length?",
+            options: [
+                { ar: "4", en: "4" },
+                { ar: "2", en: "2" },
+                { ar: "3", en: "3" },
+                { ar: "5", en: "5" }
+            ],
+            correct: 0,
+            exp_ar: "كان طول المصفوفة 3، وبإضافة 'kiwi' في النهاية عبر push أصبح طولها 4 عناصر.",
+            exp_en: "The array initially had 3 items; pushing 'kiwi' increases its length to 4."
+        },
+        {
+            topic: "JavaScript - push vs unshift",
+            ar_q: "ما الفرق الرئيسي بين الدالتين push() و unshift()؟",
+            en_q: "What is the main difference between push() and unshift()?",
+            options: [
+                { ar: "push تحذف من النهاية، بينما unshift تضيف", en: "push removes from the end, while unshift adds" },
+                { ar: "كلاهما يقومان بنفس الوظيفة تماماً", en: "Both perform the exact same action" },
+                { ar: "unshift مخصصة للأرقام فقط", en: "unshift is only for numbers" },
+                { ar: "push تضيف في النهاية، بينما unshift تضيف في البداية", en: "push adds to the end, while unshift adds to the beginning" }
+            ],
+            correct: 3,
+            exp_ar: "دالة push() تضيف إلى مؤخرة المصفوفة، بينما unshift() تضيف إلى مقدمتها.",
+            exp_en: "push() appends items to the end; unshift() prepends items to the start."
+        },
+        {
+            topic: "JavaScript - pop vs shift",
+            ar_q: "ما الفرق الرئيسي بين الدالتين pop() و shift()؟",
+            en_q: "What is the main difference between pop() and shift()?",
+            options: [
+                { ar: "pop تحذف من نهاية المصفوفة، بينما shift تحذف من بدايتها", en: "pop removes from the end, while shift removes from the start" },
+                { ar: "pop مخصصة للمصفوفات النصية فقط", en: "pop is for string arrays only" },
+                { ar: "pop تضيف عنصراً، بينما shift تحذف عنصراً", en: "pop adds an element, while shift deletes one" },
+                { ar: "shift تحذف المصفوفة بأكملها", en: "shift deletes the entire array" }
+            ],
+            correct: 0,
+            exp_ar: "دالة pop() تحذف آخر عنصر، بينما shift() تحذف أول عنصر من المصفوفة.",
+            exp_en: "pop() removes the item at the tail; shift() removes the item at the head."
+        },
+        {
+            topic: "JavaScript - Array Mutation",
+            ar_q: "هل دوال المصفوفات (push, pop, shift, unshift, splice, sort) تعدل على المصفوفة الأصلية نفسها؟",
+            en_q: "Do the array methods (push, pop, shift, unshift, splice, sort) mutate the original array in-place?",
+            options: [
+                { ar: "نعم، جميعها تعدل وتغير على المصفوفة الأصلية مباشرة (In-place mutation)", en: "Yes, they all mutate the original array directly in-place" },
+                { ar: "دالة sort فقط هي التي تعدل", en: "Only the sort method mutates" },
+                { ar: "لا، ترجع دائماً نسخة جديدة دون المساس بالأصل", en: "No, they always return a new copy without modifying the original" },
+                { ar: "تعتمد فقط على نوع المتصفح", en: "It depends strictly on the browser engine" }
+            ],
+            correct: 0,
+            exp_ar: "تعتبر هذه الدوال دوال مُغيّرة (Mutating methods) تقوم بتعديل عناصر المصفوفة الأصلية في الذاكرة.",
+            exp_en: "These methods are mutating methods that modify the caller array directly in memory."
+        },
+        {
+            topic: "JavaScript - Equality Operator",
+            ar_q: "في جملة الشرط: if (number % 2 == 0)، ماذا يعني المعامل ==؟",
+            en_q: "In if (number % 2 == 0), what does the == operator represent?",
+            options: [
+                { ar: "حساب الجذر التربيعي", en: "Square root calculation" },
+                { ar: "تحويل القيمة إلى نص", en: "Converting the value to text" },
+                { ar: "إسناد وتخزين القيمة صفر في المتغير", en: "Assigning value 0 to the variable" },
+                { ar: "مقارنة المساواة بين الطرفين", en: "Equality comparison between the two operands" }
+            ],
+            correct: 3,
+            exp_ar: "المعامل == يُستخدم للمقارنة والتحقق من التساوي، بينما = المفردة تستخدم للإسناد والتعيين.",
+            exp_en: "The == operator performs an equality comparison, unlike single = which is for assignment."
+        }
+    ];
+
+    let userAnswers = new Array(questions.length).fill(null);
+    let currentIdx = 0;
+    let score = 0;
+
+    function loadScores() {
+        const storedHigh = localStorage.getItem('js_arrays_highscore');
+        const high = storedHigh ? parseInt(storedHigh) : 0;
+        document.getElementById('highScore').innerText = high;
+
+        const storedFirst = localStorage.getItem('js_arrays_first_score');
+        if (storedFirst !== null) {
+            document.getElementById('firstScore').innerText = storedFirst;
+        } else {
+            document.getElementById('firstScore').innerText = "--";
+        }
+        return { high, first: storedFirst };
+    }
+
+    function saveScores(finalScore) {
+        let isFirstTime = false;
+        if (localStorage.getItem('js_arrays_first_score') === null) {
+            localStorage.setItem('js_arrays_first_score', finalScore);
+            document.getElementById('firstScore').innerText = finalScore;
+            isFirstTime = true;
+        }
+
+        const currentHigh = parseInt(localStorage.getItem('js_arrays_highscore') || '0');
+        let isNewHigh = false;
+        if (finalScore > currentHigh) {
+            localStorage.setItem('js_arrays_highscore', finalScore);
+            document.getElementById('highScore').innerText = finalScore;
+            isNewHigh = true;
+        }
+
+        return { isFirstTime, isNewHigh };
+    }
+
+    function calculateScore() {
+        let s = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] !== null && userAnswers[i] === questions[i].correct) {
+                s++;
+            }
+        }
+        score = s;
+        document.getElementById('score').innerText = score;
+        return score;
+    }
+
+    function displayQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('qCurrent').innerText = currentIdx + 1;
+        document.getElementById('topicBadge').innerText = q.topic;
+        document.getElementById('questionTextAr').innerText = (currentIdx + 1) + ". " + q.ar_q;
+        document.getElementById('questionTextEn').innerText = "Q" + (currentIdx + 1) + ": " + q.en_q;
+
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        const pct = (answeredCount / questions.length) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+
+        const expBox = document.getElementById('explanationText');
+        const statusIndicator = document.getElementById('qStatusIndicator');
+
+        const prevAns = userAnswers[currentIdx];
+
+        if (prevAns === null) {
+            statusIndicator.innerText = "لم يُجب بعد / Not answered";
+            statusIndicator.style.color = "var(--text-muted)";
+            expBox.style.display = 'none';
+        } else {
+            statusIndicator.innerText = prevAns === q.correct ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+            statusIndicator.style.color = prevAns === q.correct ? "var(--success)" : "var(--danger)";
+            showExplanation(prevAns === q.correct, prevAns);
+        }
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerHTML = `
+                <div class="opt-ar">${['أ', 'ب', 'ج', 'د'][idx]}) ${opt.ar}</div>
+                <div class="opt-en">${['A', 'B', 'C', 'D'][idx]}) ${opt.en}</div>
+            `;
+
+            if (prevAns !== null) {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('correct');
+                } else if (idx === prevAns) {
+                    btn.classList.add('wrong');
+                }
+            } else {
+                btn.onclick = () => selectAnswer(idx);
+            }
+            container.appendChild(btn);
+        });
+
+        document.getElementById('prevBtn').disabled = (currentIdx === 0);
+        document.getElementById('nextBtn').innerText = (currentIdx === questions.length - 1) ? "إنهاء الاختبار / Finish 🏁" : "التالي / Next ⬅️";
+    }
+
+    function selectAnswer(chosenIdx) {
+        if (userAnswers[currentIdx] !== null) return;
+
+        userAnswers[currentIdx] = chosenIdx;
+        calculateScore();
+
+        const q = questions[currentIdx];
+        const isCorrect = (chosenIdx === q.correct);
+
+        const buttons = document.querySelectorAll('.opt-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            buttons[chosenIdx].classList.add('correct');
+        } else {
+            buttons[chosenIdx].classList.add('wrong');
+            buttons[q.correct].classList.add('correct');
+        }
+
+        showExplanation(isCorrect, chosenIdx);
+
+        const statusIndicator = document.getElementById('qStatusIndicator');
+        statusIndicator.innerText = isCorrect ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+        statusIndicator.style.color = isCorrect ? "var(--success)" : "var(--danger)";
+
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        document.getElementById('progressBar').style.width = ((answeredCount / questions.length) * 100) + '%';
+    }
+
+    function showExplanation(isCorrect, chosenIdx) {
+        const q = questions[currentIdx];
+        const expBox = document.getElementById('explanationText');
+
+        if (isCorrect) {
+            expBox.innerHTML = `
+                <b>✅ إجابة صحيحة / Correct!</b><br>
+                <div>${q.exp_ar}</div>
+                <div class="exp-en">${q.exp_en}</div>
+            `;
+            expBox.style.borderRightColor = 'var(--success)';
+        } else {
+            expBox.innerHTML = `
+                <b>❌ إجابة غير دقيقة / Incorrect!</b><br>
+                <div>الإجابة الصحيحة هي: <b>${q.options[q.correct].ar}</b></div>
+                <div class="exp-en">Correct choice: <b>${q.options[q.correct].en}</b></div>
+                <div style="margin-top: 6px;">${q.exp_ar}</div>
+                <div class="exp-en">${q.exp_en}</div>
+            `;
+            expBox.style.borderRightColor = 'var(--danger)';
+        }
+        expBox.style.display = 'block';
+    }
+
+    function nextQuestion() {
+        if (currentIdx < questions.length - 1) {
+            currentIdx++;
+            displayQuestion();
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            displayQuestion();
+        }
+    }
+
+    function openIndexModal() {
+        buildIndexGrid();
+        document.getElementById('indexModal').style.display = 'flex';
+    }
+
+    function closeIndexModal() {
+        document.getElementById('indexModal').style.display = 'none';
+    }
+
+    function closeIndexModalOnOutside(e) {
+        if (e.target.id === 'indexModal') {
+            closeIndexModal();
+        }
+    }
+
+    function buildIndexGrid() {
+        const grid = document.getElementById('gridIndexContainer');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const pill = document.createElement('div');
+            pill.className = 'index-pill';
+            pill.innerText = (i + 1);
+
+            if (i === currentIdx) {
+                pill.classList.add('active');
+            }
+
+            if (userAnswers[i] !== null) {
+                if (userAnswers[i] === questions[i].correct) {
+                    pill.classList.add('solved-correct');
+                } else {
+                    pill.classList.add('solved-wrong');
+                }
+            }
+
+            pill.onclick = () => {
+                currentIdx = i;
+                displayQuestion();
+                closeIndexModal();
+            };
+
+            grid.appendChild(pill);
+        }
+    }
+
+    function showFinalResults() {
+        document.getElementById('quizCard').style.display = 'none';
+        document.getElementById('progressBar').style.width = '100%';
+
+        const resultsCard = document.getElementById('resultsCard');
+        resultsCard.style.display = 'block';
+
+        calculateScore();
+        document.getElementById('finalScore').innerText = score;
+        const res = saveScores(score);
+        const scores = loadScores();
+
+        const notice = document.getElementById('highScoreNotice');
+        const msg = document.getElementById('resultMsg');
+        const icon = document.getElementById('trophyIcon');
+
+        let textDetails = `🎯 أول محاولة مسجلة (First Attempt): ${scores.first} من 20<br>`;
+        if (res.isNewHigh && score > 0) {
+            textDetails += `🏆 مبروك! حققت رقماً قياسياً جديداً (New High Score): ${score} من 20!`;
+        } else {
+            textDetails += `🏆 أعلى نتيجة على هذا الجهاز (Best Score): ${scores.high} من 20`;
+        }
+        notice.innerHTML = textDetails;
+
+        if (score >= 18) {
+            msg.innerText = "ممتاز وفوق العادة! متقن تماماً لأساسيات ومصفوفات JavaScript 🌟";
+            icon.innerText = "👑";
+        } else if (score >= 14) {
+            msg.innerText = "جيد جداً! استيعاب ممتاز لدوال المصفوفات وشروط if-else 👏";
+            icon.innerText = "🎉";
+        } else if (score >= 10) {
+            msg.innerText = "مستوى متوسط! راجع دوال splice و shift و unshift 📖";
+            icon.innerText = "👍";
+        } else {
+            msg.innerText = "يُنصح بإعادة دراسة وتطبيق الأكواد عملياً ⚠️";
+            icon.innerText = "💡";
+        }
+    }
+
+    function restartQuiz() {
+        userAnswers = new Array(questions.length).fill(null);
+        currentIdx = 0;
+        score = 0;
+        document.getElementById('score').innerText = '0';
+        document.getElementById('resultsCard').style.display = 'none';
+        document.getElementById('quizCard').style.display = 'block';
+        displayQuestion();
+    }
+
+    window.onload = function() {
+        loadScores();
+        displayQuestion();
+    };
+</script>
+</body>
+</html>

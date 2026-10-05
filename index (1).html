@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bac 2</title>
+  <style>
+    ```css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+
+    background: linear-gradient(135deg, #141e30, #243b55);
+
+    padding: 30px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+a {
+    display: block;
+
+    padding: 20px 25px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+
+    backdrop-filter: blur(10px);
+
+    transition: 0.3s ease;
+}
+
+a:hover {
+    transform: translateY(-5px) scale(1.02);
+
+    background: rgba(255, 255, 255, 0.2);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+a:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 20px;
+    }
+
+    a {
+        font-size: 17px;
+        padding: 17px;
+    }
+}
+```
+
+والـ HTML يكون بسيطًا جدًا:
+
+```html
+<div class="container">
+
+    <a href="#">Home</a>
+
+    <a href="#">About Us</a>
+
+    <a href="#">Our Courses</a>
+
+    <a href="#">Projects</a>
+
+    <a href="#">Contact Us</a>
+
+</div>
+```
+
+الشكل النهائي سيكون عبارة عن **روابط كبيرة مرتبة رأسيًا**، مع خلفية Gradient وتأثير Glass عند المرور بالماوس، ويظل Responsive على الموبايل.
+
+  </style>
+</head>
+<body>
+<a href="lesson1.html">lesson1</a>
+  <a href="lesson2.html">lesson2</a>
+  <a href="lesson3.html">lesson3</a>
+  <a href="lesson4.html">lesson4</a>
+
+</body>
+</html>
