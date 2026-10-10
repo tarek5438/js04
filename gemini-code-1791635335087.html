@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Quiz: Array Methods & While Loops (20 Questions)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent: #f59e0b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        code, pre {
+            font-family: 'Fira Code', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.92em;
+            color: #0284c7;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+            color: white;
+            padding: 26px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.25);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 1.7rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #e0f2fe;
+            direction: ltr;
+        }
+
+        .stats-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-val.high {
+            color: var(--accent);
+        }
+
+        .btn-index {
+            background: #f0f9ff;
+            color: var(--primary);
+            border: 2px solid #bae6fd;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-index:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .q-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 20px -3px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .q-badge {
+            background: #f0f9ff;
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .q-text-ar {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .q-text-en {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #475569;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opt-btn {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: right;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            background: #f0f9ff;
+            border-color: #7dd3fc;
+            transform: translateX(-4px);
+        }
+
+        .opt-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--success) !important;
+        }
+
+        .opt-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+        }
+
+        .opt-ar {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .opt-en {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #64748b;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .opt-btn.correct .opt-ar, .opt-btn.correct .opt-en {
+            color: #15803d !important;
+        }
+
+        .opt-btn.wrong .opt-ar, .opt-btn.wrong .opt-en {
+            color: #991b1b !important;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+            display: none;
+            background: #f1f5f9;
+            border-right: 5px solid var(--primary);
+        }
+
+        .exp-en {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            margin-top: 6px;
+            font-size: 0.92rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-nav:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 26px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            animation: popIn 0.25s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+
+        .close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+        }
+
+        .grid-index {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .index-pill {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 10px 4px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #334155;
+        }
+
+        .index-pill:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+            transform: translateY(-2px);
+        }
+
+        .index-pill.active {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+            font-weight: 900;
+        }
+
+        .index-pill.solved-correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+        }
+
+        .index-pill.solved-wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+        }
+
+        .results-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .trophy {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #f0f9ff;
+            border: 6px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .score-num {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .btn-restart {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.2s;
+        }
+
+        .btn-restart:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>اختبار جافاسكربت: دوال المصفوفات وحلقات التكرار (20 سؤالاً)</h1>
+        <p>Bilingual Quiz: Array Methods (reverse, find, filter, some, every) & While Loops (continue)</p>
+    </header>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">رقم السؤال / Question</span>
+            <div><span class="stat-val" id="qCurrent">1</span> / 20</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">أول محاولة / 1st Score 🎯</span>
+            <span class="stat-val" style="color: #0284c7;" id="firstScore">--</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">الدرجة الحالية / Score</span>
+            <span class="stat-val" id="score">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">أعلى نتيجة / High Score 🏆</span>
+            <span class="stat-val high" id="highScore">0</span>
+        </div>
+        <div>
+            <button class="btn-index" onclick="openIndexModal()">
+                <span>📑</span>
+                <span>فهرس الأسئلة (1-20)</span>
+            </button>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="q-card" id="quizCard">
+        <div class="q-header">
+            <span class="q-badge" id="topicBadge">JS Concept</span>
+            <span style="color: var(--text-muted); font-size: 0.9rem;" id="qStatusIndicator">لم يُجب بعد / Not answered</span>
+        </div>
+        
+        <div class="q-text-ar" id="questionTextAr">جاري تحميل السؤال...</div>
+        <div class="q-text-en" id="questionTextEn">Loading question...</div>
+        
+        <div class="options-list" id="optionsContainer"></div>
+        
+        <div class="explanation" id="explanationText"></div>
+
+        <div class="actions">
+            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled>➡️ السابق / Prev</button>
+            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">التالي / Next ⬅️</button>
+        </div>
+    </div>
+
+    <div class="results-card" id="resultsCard">
+        <div class="trophy" id="trophyIcon">🎉</div>
+        <h2 id="resultMsg" style="font-size: 1.8rem; margin-bottom: 8px;">أحسنت صنعاً!</h2>
+        <p id="resultSubtitle" style="color: var(--text-muted);">You completed all 20 JavaScript questions!</p>
+        
+        <div class="score-circle">
+            <div class="score-num" id="finalScore">0</div>
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">/ 20</span>
+        </div>
+
+        <p id="highScoreNotice" style="font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-top: 10px;"></p>
+
+        <button class="btn-restart" onclick="restartQuiz()">إعادة الاختبار من البداية 🔄</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="indexModal" onclick="closeIndexModalOnOutside(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📑 فهرس أسئلة الجافاسكربت (Question Index)</h3>
+            <button class="close-btn" onclick="closeIndexModal()">✕</button>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background: #22c55e;"></div><span>إجابة صحيحة</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>إجابة خاطئة</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #0284c7;"></div><span>السؤال الحالي</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #e2e8f0; border: 1px solid #cbd5e1;"></div><span>لم يُحل بعد</span></div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">انقر على أي رقم سؤال للانتقال إليه مباشرة:</p>
+        
+        <div class="grid-index" id="gridIndexContainer"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            topic: "Array - reverse()",
+            ar_q: "ما هو الناتج المطبوع بعد تنفيذ students.reverse() على المصفوفة ['yassin', 'aser', 'eyad', 'mostafa']؟",
+            en_q: "What is the output after executing students.reverse() on ['yassin', 'aser', 'eyad', 'mostafa']?",
+            options: [
+                { ar: "['mostafa', 'eyad', 'aser', 'yassin']", en: "['mostafa', 'eyad', 'aser', 'yassin']" },
+                { ar: "['aser', 'eyad', 'mostafa', 'yassin']", en: "['aser', 'eyad', 'mostafa', 'yassin']" },
+                { ar: "['yassin', 'aser', 'eyad', 'mostafa']", en: "['yassin', 'aser', 'eyad', 'mostafa']" },
+                { ar: "['mostafa', 'yassin', 'eyad', 'aser']", en: "['mostafa', 'yassin', 'eyad', 'aser']" }
+            ],
+            correct: 0,
+            exp_ar: "دالة reverse() تعكس ترتيب عناصر المصفوفة بحيث يصبح العنصر الأخير أولاً والأول آخراً.",
+            exp_en: "reverse() reverses the array elements in place so the last element becomes the first."
+        },
+        {
+            topic: "Array - Mutation",
+            ar_q: "هل تقوم دالة reverse() بتعديل المصفوفة الأصلية (Mutate) أم تُرجع مصفوفة جديدة؟",
+            en_q: "Does reverse() mutate the original array in place or return a new one?",
+            options: [
+                { ar: "تُعدل المصفوفة الأصلية في مكانها (In-place Mutation)", en: "It mutates the original array in place" },
+                { ar: "تُرجع مصفوفة جديدة تماماً وتبقى الأصلية بلا تغيير", en: "It returns a new array leaving the original unchanged" },
+                { ar: "تنسخ المصفوفة فقط داخل الذاكرة المؤقتة", en: "It only copies it into a temporary buffer" },
+                { ar: "تُفرغ المصفوفة الأصلية تماماً", en: "It empties the original array completely" }
+            ],
+            correct: 0,
+            exp_ar: "دالة reverse() تغير ترتيب عناصر المصفوفة الأصلية نفسها (destructive method) وترجع مرجعاً لنفس المصفوفة.",
+            exp_en: "reverse() mutates the original array directly in place."
+        },
+        {
+            topic: "Array - find()",
+            ar_q: "بعد عكس المصفوفة، ما القيمة المخزنة في n = students.find(x => x.length == 4)؟",
+            en_q: "After reversing, what value is stored in n = students.find(x => x.length == 4)?",
+            options: [
+                { ar: "'aser'", en: "'aser'" },
+                { ar: "'eyad'", en: "'eyad'" },
+                { ar: "['eyad', 'aser']", en: "['eyad', 'aser']" },
+                { ar: "undefined", en: "undefined" }
+            ],
+            correct: 1,
+            exp_ar: "المصفوفة المعكوسة هي ['mostafa', 'eyad', 'aser', 'yassin']. دالة find ترجع أول عنصر يطابق الشرط، وأول اسم طوله 4 أحرف يقابلها هو 'eyad'.",
+            exp_en: "The reversed array has 'eyad' before 'aser'. find() returns the very first matching element."
+        },
+        {
+            topic: "Array - find() Return Type",
+            ar_q: "ما هو نوع القيمة التي ترجعها دالة find() دائماً عند تحقق الشرط؟",
+            en_q: "What data type does the find() method return when a match is found?",
+            options: [
+                { ar: "مصفوفة تضم جميع العناصر المتطابقة", en: "An array of all matched elements" },
+                { ar: "العنصر نفسه فقط (أول عنصر يطابق الشرط)", en: "The element itself (the first matching element)" },
+                { ar: "قيمة منطقية (true أو false)", en: "A boolean value (true or false)" },
+                { ar: "رقم الفهرس (Index) الخاص بالعنصر", en: "The index number of the item" }
+            ],
+            correct: 1,
+            exp_ar: "دالة find ترجع قيمة أول عنصر يطابق الشرط مباشرة وليس مصفوفة.",
+            exp_en: "find() returns the value of the first element that satisfies the testing function."
+        },
+        {
+            topic: "Array - find() No Match",
+            ar_q: "ماذا ترجع دالة find() إذا لم يطابق أي عنصر في المصفوفة الشرط المطلوب؟",
+            en_q: "What does find() return if no elements satisfy the provided condition?",
+            options: [
+                { ar: "null", en: "null" },
+                { ar: "-1", en: "-1" },
+                { ar: "undefined", en: "undefined" },
+                { ar: "مصفوفة فارغة []", en: "An empty array []" }
+            ],
+            correct: 2,
+            exp_ar: "إذا انتهت عملية البحث دون إيجاد أي عنصر يحقق شرط الاختبار، ترجع find القيمة undefined.",
+            exp_en: "If no elements satisfy the testing function, find() returns undefined."
+        },
+        {
+            topic: "Array - filter()",
+            ar_q: "ما الناتج المطبوع من names = students.filter(x => x.length == 4) للمصفوفة المعكوسة؟",
+            en_q: "What is logged by names = students.filter(x => x.length == 4) on the reversed array?",
+            options: [
+                { ar: "['eyad', 'aser']", en: "['eyad', 'aser']" },
+                { ar: "'eyad'", en: "'eyad'" },
+                { ar: "['aser', 'eyad']", en: "['aser', 'eyad']" },
+                { ar: "['yassin', 'mostafa']", en: "['yassin', 'mostafa']" }
+            ],
+            correct: 0,
+            exp_ar: "دالة filter تمر على جميع عناصر المصفوفة بالترتيب الحالي ['mostafa', 'eyad', 'aser', 'yassin'] وتجمع كل العناصر التي طولها 4 في مصفوفة جديدة: ['eyad', 'aser'].",
+            exp_en: "filter() collects all matching items preserving the current order: ['eyad', 'aser']."
+        },
+        {
+            topic: "Array - find() vs filter()",
+            ar_q: "ما الفرق الجوهري بين دالتي find() و filter() في جافاسكربت؟",
+            en_q: "What is the primary difference between find() and filter() in JavaScript?",
+            options: [
+                { ar: "find ترجع أول عنصر يطابق الشرط، بينما filter ترجع مصفوفة تضم كل العناصر المتطابقة", en: "find returns the first matched item; filter returns an array of all matched items" },
+                { ar: "find تعمل فقط مع الأرقام بينما filter تعمل فقط مع النصوص", en: "find works only on numbers; filter only on strings" },
+                { ar: "find تعدل المصفوفة الأصلية بينما filter لا تعدلها", en: "find mutates the original array; filter does not" },
+                { ar: "لا يوجد أي فرق بينهما إطلاقاً", en: "There is no difference between them" }
+            ],
+            correct: 0,
+            exp_ar: "find تكتفي بأول عنصر وتوقف البحث فوراً، أما filter فتفحص جميع العناصر وتعيد مصفوفة جديدة بالنتائج.",
+            exp_en: "find stops at the first match returning the element; filter evaluates all elements returning an array."
+        },
+        {
+            topic: "Array - some()",
+            ar_q: "في المصفوفة ['yassin', 'aser', 'eyad', 'mostafa', 'ali']، ما ناتج students.some(x => x.length == 4)؟",
+            en_q: "In ['yassin', 'aser', 'eyad', 'mostafa', 'ali'], what does students.some(x => x.length == 4) return?",
+            options: [
+                { ar: "true", en: "true" },
+                { ar: "false", en: "false" },
+                { ar: "'aser'", en: "'aser'" },
+                { ar: "['aser', 'eyad']", en: "['aser', 'eyad']" }
+            ],
+            correct: 0,
+            exp_ar: "دالة some ترجع true إذا تحقق الشرط على عنصر واحد على الأقل، وهنا لدينا 'aser' و 'eyad' طول كل منهما 4.",
+            exp_en: "some() tests whether at least one element passes the test, returning true."
+        },
+        {
+            topic: "Array - some() Behavior",
+            ar_q: "متى تتوقف دالة some() عن فحص بقية عناصر المصفوفة؟",
+            en_q: "When does the some() method stop evaluating the remaining elements?",
+            options: [
+                { ar: "بمجرد إيجاد أول عنصر يُرجع شرطه true", en: "As soon as it finds the first element that yields true" },
+                { ar: "تفحص دائماً جميع عناصر المصفوفة حتى النهاية", en: "It always checks all elements until the end" },
+                { ar: "عند الوصول لمنتصف المصفوفة", en: "When it reaches the midpoint of the array" },
+                { ar: "إذا وجدت عنصراً يُرجع false", en: "If it finds an element that yields false" }
+            ],
+            correct: 0,
+            exp_ar: "تتميز some بخاصية التوقف المبكر (short-circuiting): بمجرد إيجاد أول عنصر يحقق الشرط ترجع true وتتوقف فوراً.",
+            exp_en: "some() short-circuits and stops iterating immediately when a condition returns true."
+        },
+        {
+            topic: "Array - every()",
+            ar_q: "في الكود: students.every(x => x.length > 3) مع وجود 'ali' في المصفوفة، ما النتيجة؟",
+            en_q: "In: students.every(x => x.length > 3) where students includes 'ali', what is the result?",
+            options: [
+                { ar: "false (لأن طول 'ali' هو 3 فقط)", en: "false (because 'ali' has length 3)" },
+                { ar: "true", en: "true" },
+                { ar: "undefined", en: "undefined" },
+                { ar: "3", en: "3" }
+            ],
+            correct: 0,
+            exp_ar: "دالة every تشترط نجاح الشرط على كافة العناصر دون استثناء. وبما أن كلمة 'ali' طولها 3 وليست أكبر من 3، فالنتيجة false.",
+            exp_en: "every() requires all elements to pass. Since 'ali'.length is 3 (not > 3), it returns false."
+        },
+        {
+            topic: "Array - some() vs every()",
+            ar_q: "ما هو الاختلاف الأساسي بين some() و every()؟",
+            en_q: "What is the key difference between some() and every()?",
+            options: [
+                { ar: "some تحتاج عنصراً واحداً على الأقل، بينما every تشترط انطباق الشرط على جميع العناصر", en: "some requires at least one match; every requires all elements to match" },
+                { ar: "some ترجع أرقاماً و every ترجع نصوصاً", en: "some returns numbers and every returns strings" },
+                { ar: "every تعدل المصفوفة و some لا تعدلها", en: "every mutates the array while some does not" },
+                { ar: "some تعمل مع المصفوفات فقط بينما every تعمل مع الكائنات", en: "some works on arrays only, every works on objects" }
+            ],
+            correct: 0,
+            exp_ar: "some تعني (هل يوجد على الأقل عنصر؟) بينما every تعني (هل كل العناصر بلا استثناء تطابق الشرط؟).",
+            exp_en: "some returns true if any element matches; every returns true only if every element matches."
+        },
+        {
+            topic: "Loop - while Count",
+            ar_q: "كم مرة ستُطبع كلمة 'hello' في الحلقة التالية: let x = 0; while (x < 10) { x += 1; console.log('hello'); }؟",
+            en_q: "How many times will 'hello' be printed: let x = 0; while (x < 10) { x += 1; console.log('hello'); }?",
+            options: [
+                { ar: "10 مرات", en: "10 times" },
+                { ar: "9 مرات", en: "9 times" },
+                { ar: "11 مرة", en: "11 times" },
+                { ar: "حلقة لا نهائية", en: "Infinite loop" }
+            ],
+            correct: 0,
+            exp_ar: "تبدأ x من 0 وتزيد بمقدار 1 في كل دورة حتى تصبح 10، فيتوقف شرط x < 10، مما يعني تكرار الكود 10 مرات بالضبط.",
+            exp_en: "x increments from 0 to 10 step 1, running exactly 10 iterations."
+        },
+        {
+            topic: "Loop - while Sequence",
+            ar_q: "في الكود: let x = 0; while (x < 10) { x += 1; console.log(x); }، ما أول وآخر رقم يُطبع في الكونسول؟",
+            en_q: "In: let x = 0; while (x < 10) { x += 1; console.log(x); }, what are the first and last logged numbers?",
+            options: [
+                { ar: "أول رقم 1 وآخر رقم 10", en: "First is 1 and last is 10" },
+                { ar: "أول رقم 0 وآخر رقم 9", en: "First is 0 and last is 9" },
+                { ar: "أول رقم 0 وآخر رقم 10", en: "First is 0 and last is 10" },
+                { ar: "أول رقم 1 وآخر رقم 9", en: "First is 1 and last is 9" }
+            ],
+            correct: 0,
+            exp_ar: "الزيادة x += 1 تحدث قبل أمر الطباعة: في الدورة الأولى تصبح x=1 ثم تُطبع، وفي الدورة الأخيرة تصبح x=10 ثم تُطبع ويتوقف التكرار.",
+            exp_en: "Because x += 1 occurs before console.log, the first printed value is 1 and the final is 10."
+        },
+        {
+            topic: "Loop - continue Statement",
+            ar_q: "ما وظيفة الكلمة المفتاحية continue داخل حلقات التكرار؟",
+            en_q: "What does the continue statement do inside loops?",
+            options: [
+                { ar: "تتخطى ما تبقى من الدورة الحالية وتنتقل مباشرة للدورة التالية", en: "Skips the rest of the current iteration and jumps to the next" },
+                { ar: "توقف وتنهي حلقة التكرار بالكامل وتخرج منها", en: "Terminates the entire loop completely" },
+                { ar: "تُعيد ضبط المتغير إلى الصفر", en: "Resets the loop counter to 0" },
+                { ar: "تطبع تحذيراً في الكونسول", en: "Logs a runtime warning in console" }
+            ],
+            correct: 0,
+            exp_ar: "continue تتخطى فقط الأسطر البرمجية التالية لها داخل نفس الدورة وتنتقل فوراً لبداية الدورة الجديدة.",
+            exp_en: "continue breaks only the current cycle and proceeds with the next iteration."
+        },
+        {
+            topic: "Loop - continue Output",
+            ar_q: "في الكود: while (x < 10) { x += 1; if (x == 5) continue; console.log(x); }، ما الرقم الذي لن يظهر أبداً؟",
+            en_q: "In: while (x < 10) { x += 1; if (x == 5) continue; console.log(x); }, which number is never logged?",
+            options: [
+                { ar: "الرقم 5", en: "The number 5" },
+                { ar: "الرقم 4", en: "The number 4" },
+                { ar: "الرقم 10", en: "The number 10" },
+                { ar: "الرقم 0", en: "The number 0" }
+            ],
+            correct: 0,
+            exp_ar: "عندما تصبح x تساوي 5 يتحقق الشرط ويتم تنفيذ continue، فيتم تخطي سطر console.log(x) لرقم 5 فقط.",
+            exp_en: "When x === 5, continue skips console.log(x), so 5 is omitted from the output."
+        },
+        {
+            topic: "Loop - Output Count with continue",
+            ar_q: "كم عدد الأرقام التي ستُطبع إجمالاً في حلقة while التي تحتوي على شرط if (x == 5) continue؟",
+            en_q: "How many total numbers will be logged in the while loop with if (x == 5) continue?",
+            options: [
+                { ar: "9 أرقام", en: "9 numbers" },
+                { ar: "10 أرقام", en: "10 numbers" },
+                { ar: "5 أرقام", en: "5 numbers" },
+                { ar: "4 أرقام", en: "4 numbers" }
+            ],
+            correct: 0,
+            exp_ar: "الحلقة تدور 10 دورات من 1 إلى 10، ويتم استبعاد الرقم 5 عبر continue، فيتبقى 9 أرقام مطبوعة: [1, 2, 3, 4, 6, 7, 8, 9, 10].",
+            exp_en: "The loop runs 10 times but skips logging when x=5, yielding 9 printed numbers."
+        },
+        {
+            topic: "Loop - break vs continue",
+            ar_q: "لو استبدلنا continue بـ break في جملة if (x == 5)، فما آخر رقم سيُطبع؟",
+            en_q: "If continue were replaced by break in if (x == 5), what would be the last number logged?",
+            options: [
+                { ar: "الرقم 4", en: "The number 4" },
+                { ar: "الرقم 5", en: "The number 5" },
+                { ar: "الرقم 9", en: "The number 9" },
+                { ar: "الرقم 10", en: "The number 10" }
+            ],
+            correct: 0,
+            exp_ar: "أمر break ينهي الحلقة فوراً عند وصول x إلى 5 قبل تنفيذ console.log، فيكون الرقم 4 هو آخر رقم طُبع.",
+            exp_en: "break exits the entire loop immediately at x=5, so 4 is the last printed number."
+        },
+        {
+            topic: "Loop - Infinite Loop Risk",
+            ar_q: "لو كانت x += 1 مكتوبة بعد جملة if (x == 5) continue، ماذا كان سيحدث؟",
+            en_q: "If x += 1 were written after if (x == 5) continue, what would happen?",
+            options: [
+                { ar: "ستدخل الحلقة في تكرار لا نهائي (Infinite Loop) لأن قيمة x ستعلق عند 5", en: "The loop becomes infinite because x remains stuck at 5" },
+                { ar: "سيتوقف البرنامج بدون أي أخطاء", en: "The program stops cleanly with no errors" },
+                { ar: "ستُطبع الأرقام بشكل عكسي", en: "Numbers will be logged in reverse order" },
+                { ar: "سيعمل الكود بشكل طبيعي تماماً", en: "The code executes normally" }
+            ],
+            correct: 0,
+            exp_ar: "إذا وُضعت الزيادة بعد continue، ستتخطى الحلقة سطر الزيادة في كل دورة وتبقى x=5 دائماً مما يسبب تكراراً لا نهائياً.",
+            exp_en: "Skipping the increment step keeps x at 5 perpetually, triggering an infinite loop."
+        },
+        {
+            topic: "Array - Arrow Function Syntax",
+            ar_q: "في التعبير x => x.length == 4، ماذا يمثل المعامل x؟",
+            en_q: "In the arrow function x => x.length == 4, what does parameter x represent?",
+            options: [
+                { ar: "عنصر المصفوفة الحالي الذي يتم فحصه في كل دورة", en: "The current array element being evaluated in each iteration" },
+                { ar: "طول المصفوفة الإجمالي", en: "The total length of the array" },
+                { ar: "رقم الفهرس فقط (Index)", en: "The index number only" },
+                { ar: "اسم المصفوفة الأصلية", en: "The identifier name of the array" }
+            ],
+            correct: 0,
+            exp_ar: "في دوال المصفوفات التكرارية (find, filter, some, every)، المعامل الأول لدالة الـ callback يمثل العنصر الحالي قيد الفحص.",
+            exp_en: "In callback-based array methods, the first parameter represents the current element."
+        },
+        {
+            topic: "Loop - Final Value of x",
+            ar_q: "بعد انتهاء حلقة التكرار while (x < 10) بالكامل، ما القيمة النهائية للمتغير x في الذاكرة؟",
+            en_q: "After the while (x < 10) loop completely finishes, what is the final value of x in memory?",
+            options: [
+                { ar: "10", en: "10" },
+                { ar: "9", en: "9" },
+                { ar: "11", en: "11" },
+                { ar: "0", en: "0" }
+            ],
+            correct: 0,
+            exp_ar: "تتوقف الحلقة عندما يصبح الشرط x < 10 خاطئاً (false)، ويحدث ذلك تحديداً عندما تصل قيمة x إلى 10.",
+            exp_en: "The loop condition x < 10 evaluates to false precisely when x reaches 10."
+        }
+    ];
+
+    let userAnswers = new Array(questions.length).fill(null);
+    let currentIdx = 0;
+    let score = 0;
+
+    function loadScores() {
+        const storedHigh = localStorage.getItem('js_arr_loop_highscore');
+        const high = storedHigh ? parseInt(storedHigh) : 0;
+        document.getElementById('highScore').innerText = high;
+
+        const storedFirst = localStorage.getItem('js_arr_loop_first_score');
+        if (storedFirst !== null) {
+            document.getElementById('firstScore').innerText = storedFirst;
+        } else {
+            document.getElementById('firstScore').innerText = "--";
+        }
+        return { high, first: storedFirst };
+    }
+
+    function saveScores(finalScore) {
+        let isFirstTime = false;
+        if (localStorage.getItem('js_arr_loop_first_score') === null) {
+            localStorage.setItem('js_arr_loop_first_score', finalScore);
+            document.getElementById('firstScore').innerText = finalScore;
+            isFirstTime = true;
+        }
+
+        const currentHigh = parseInt(localStorage.getItem('js_arr_loop_highscore') || '0');
+        let isNewHigh = false;
+        if (finalScore > currentHigh) {
+            localStorage.setItem('js_arr_loop_highscore', finalScore);
+            document.getElementById('highScore').innerText = finalScore;
+            isNewHigh = true;
+        }
+
+        return { isFirstTime, isNewHigh };
+    }
+
+    function calculateScore() {
+        let s = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] !== null && userAnswers[i] === questions[i].correct) {
+                s++;
+            }
+        }
+        score = s;
+        document.getElementById('score').innerText = score;
+        return score;
+    }
+
+    function displayQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('qCurrent').innerText = currentIdx + 1;
+        document.getElementById('topicBadge').innerText = q.topic;
+        document.getElementById('questionTextAr').innerText = (currentIdx + 1) + ". " + q.ar_q;
+        document.getElementById('questionTextEn').innerText = "Q" + (currentIdx + 1) + ": " + q.en_q;
+
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        const pct = (answeredCount / questions.length) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+
+        const expBox = document.getElementById('explanationText');
+        const statusIndicator = document.getElementById('qStatusIndicator');
+
+        const prevAns = userAnswers[currentIdx];
+
+        if (prevAns === null) {
+            statusIndicator.innerText = "لم يُجب بعد / Not answered";
+            statusIndicator.style.color = "var(--text-muted)";
+            expBox.style.display = 'none';
+        } else {
+            statusIndicator.innerText = prevAns === q.correct ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+            statusIndicator.style.color = prevAns === q.correct ? "var(--success)" : "var(--danger)";
+            showExplanation(prevAns === q.correct, prevAns);
+        }
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerHTML = `
+                <div class="opt-ar">${['أ', 'ب', 'ج', 'د'][idx]}) ${opt.ar}</div>
+                <div class="opt-en">${['A', 'B', 'C', 'D'][idx]}) ${opt.en}</div>
+            `;
+
+            if (prevAns !== null) {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('correct');
+                } else if (idx === prevAns) {
+                    btn.classList.add('wrong');
+                }
+            } else {
+                btn.onclick = () => selectAnswer(idx);
+            }
+            container.appendChild(btn);
+        });
+
+        document.getElementById('prevBtn').disabled = (currentIdx === 0);
+        document.getElementById('nextBtn').innerText = (currentIdx === questions.length - 1) ? "إنهاء الاختبار / Finish 🏁" : "التالي / Next ⬅️";
+    }
+
+    function selectAnswer(chosenIdx) {
+        if (userAnswers[currentIdx] !== null) return;
+
+        userAnswers[currentIdx] = chosenIdx;
+        calculateScore();
+
+        const q = questions[currentIdx];
+        const isCorrect = (chosenIdx === q.correct);
+
+        const buttons = document.querySelectorAll('.opt-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            buttons[chosenIdx].classList.add('correct');
+        } else {
+            buttons[chosenIdx].classList.add('wrong');
+            buttons[q.correct].classList.add('correct');
+        }
+
+        showExplanation(isCorrect, chosenIdx);
+
+        const statusIndicator = document.getElementById('qStatusIndicator');
+        statusIndicator.innerText = isCorrect ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+        statusIndicator.style.color = isCorrect ? "var(--success)" : "var(--danger)";
+
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        document.getElementById('progressBar').style.width = ((answeredCount / questions.length) * 100) + '%';
+    }
+
+    function showExplanation(isCorrect, chosenIdx) {
+        const q = questions[currentIdx];
+        const expBox = document.getElementById('explanationText');
+
+        if (isCorrect) {
+            expBox.innerHTML = `
+                <b>✅ إجابة صحيحة / Correct!</b><br>
+                <div>${q.exp_ar}</div>
+                <div class="exp-en">${q.exp_en}</div>
+            `;
+            expBox.style.borderRightColor = 'var(--success)';
+        } else {
+            expBox.innerHTML = `
+                <b>❌ إجابة غير دقيقة / Incorrect!</b><br>
+                <div>الإجابة الصحيحة هي: <b>${q.options[q.correct].ar}</b></div>
+                <div class="exp-en">Correct choice: <b>${q.options[q.correct].en}</b></div>
+                <div style="margin-top: 6px;">${q.exp_ar}</div>
+                <div class="exp-en">${q.exp_en}</div>
+            `;
+            expBox.style.borderRightColor = 'var(--danger)';
+        }
+        expBox.style.display = 'block';
+    }
+
+    function nextQuestion() {
+        if (currentIdx < questions.length - 1) {
+            currentIdx++;
+            displayQuestion();
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            displayQuestion();
+        }
+    }
+
+    function openIndexModal() {
+        buildIndexGrid();
+        document.getElementById('indexModal').style.display = 'flex';
+    }
+
+    function closeIndexModal() {
+        document.getElementById('indexModal').style.display = 'none';
+    }
+
+    function closeIndexModalOnOutside(e) {
+        if (e.target.id === 'indexModal') {
+            closeIndexModal();
+        }
+    }
+
+    function buildIndexGrid() {
+        const grid = document.getElementById('gridIndexContainer');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const pill = document.createElement('div');
+            pill.className = 'index-pill';
+            pill.innerText = (i + 1);
+
+            if (i === currentIdx) {
+                pill.classList.add('active');
+            }
+
+            if (userAnswers[i] !== null) {
+                if (userAnswers[i] === questions[i].correct) {
+                    pill.classList.add('solved-correct');
+                } else {
+                    pill.classList.add('solved-wrong');
+                }
+            }
+
+            pill.onclick = () => {
+                currentIdx = i;
+                displayQuestion();
+                closeIndexModal();
+            };
+
+            grid.appendChild(pill);
+        }
+    }
+
+    function showFinalResults() {
+        document.getElementById('quizCard').style.display = 'none';
+        document.getElementById('progressBar').style.width = '100%';
+
+        const resultsCard = document.getElementById('resultsCard');
+        resultsCard.style.display = 'block';
+
+        calculateScore();
+        document.getElementById('finalScore').innerText = score;
+        const res = saveScores(score);
+        const scores = loadScores();
+
+        const notice = document.getElementById('highScoreNotice');
+        const msg = document.getElementById('resultMsg');
+        const icon = document.getElementById('trophyIcon');
+
+        let textDetails = `🎯 أول محاولة مسجلة (First Attempt): ${scores.first} من 20<br>`;
+        if (res.isNewHigh && score > 0) {
+            textDetails += `🏆 مبروك! حققت رقماً قياسياً جديداً (New High Score): ${score} من 20!`;
+        } else {
+            textDetails += `🏆 أعلى نتيجة على هذا الجهاز (Best Score): ${scores.high} من 20`;
+        }
+        notice.innerHTML = textDetails;
+
+        if (score >= 18) {
+            msg.innerText = "ممتاز وفوق العادة! إتقان تام لمفاهيم دوال المصفوفات وحلقات التكرار 🌟";
+            icon.innerText = "👑";
+        } else if (score >= 14) {
+            msg.innerText = "جيد جداً! استيعاب قوي لعمليات التكرار والبحث والفلترة 👏";
+            icon.innerText = "🎉";
+        } else if (score >= 10) {
+            msg.innerText = "مستوى متوسط! راجع تأثير دالة reverse والفرق بين break و continue 📖";
+            icon.innerText = "👍";
+        } else {
+            msg.innerText = "يُنصح بمراجعة مفاهيم دوال المصفوفات وخطوات تنفيذ حلقات التكرار 💡";
+            icon.innerText = "💡";
+        }
+    }
+
+    function restartQuiz() {
+        userAnswers = new Array(questions.length).fill(null);
+        currentIdx = 0;
+        score = 0;
+        document.getElementById('score').innerText = '0';
+        document.getElementById('resultsCard').style.display = 'none';
+        document.getElementById('quizCard').style.display = 'block';
+        displayQuestion();
+    }
+
+    window.onload = function() {
+        loadScores();
+        displayQuestion();
+    };
+</script>
+</body>
+</html>
