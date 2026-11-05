@@ -1,112 +1,279 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bac 2</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دروس المجموعة</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    ```css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-family: Arial, sans-serif;
-
-    background: linear-gradient(135deg, #141e30, #243b55);
-
-    padding: 30px;
-}
-
-.container {
-    width: 100%;
-    max-width: 600px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-a {
-    display: block;
-
-    padding: 20px 25px;
-
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-
-    text-decoration: none;
-    text-align: center;
-
-    font-size: 20px;
-    font-weight: bold;
-
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-
-    backdrop-filter: blur(10px);
-
-    transition: 0.3s ease;
-}
-
-a:hover {
-    transform: translateY(-5px) scale(1.02);
-
-    background: rgba(255, 255, 255, 0.2);
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-a:active {
-    transform: scale(0.98);
-}
-
-@media (max-width: 600px) {
-
     body {
-        padding: 20px;
+      font-family: 'Cairo', sans-serif;
     }
-
-    a {
-        font-size: 17px;
-        padding: 17px;
+    .lesson-card:hover .arrow-icon {
+      transform: translateX(-4px);
     }
-}
-```
-
-والـ HTML يكون بسيطًا جدًا:
-
-```html
-<div class="container">
-
-    <a href="#">Home</a>
-
-    <a href="#">About Us</a>
-
-    <a href="#">Our Courses</a>
-
-    <a href="#">Projects</a>
-
-    <a href="#">Contact Us</a>
-
-</div>
-```
-
-الشكل النهائي سيكون عبارة عن **روابط كبيرة مرتبة رأسيًا**، مع خلفية Gradient وتأثير Glass عند المرور بالماوس، ويظل Responsive على الموبايل.
-
   </style>
 </head>
-<body>
-<a href="lesson1.html">js-arrays-quiz</a>
-  <a href="lesson2.html">js quiz2</a>
-  
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
+  <!-- Header -->
+  <header class="bg-gradient-to-l from-indigo-700 via-indigo-600 to-blue-600 text-white shadow-md">
+    <div class="max-w-5xl mx-auto px-4 py-8 sm:py-10">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <span class="inline-block bg-white/15 text-indigo-100 text-xs font-semibold px-3 py-1 rounded-full mb-2">
+            بوابة الدروس
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">دروس المجموعة</h1>
+          <p class="text-indigo-100 text-sm sm:text-base mt-1">اضغط على الدرس لفتحه مباشرة</p>
+        </div>
+
+        <div class="flex items-center gap-3 self-start sm:self-center">
+          <div class="bg-white/10 backdrop-blur px-4 py-2.5 rounded-xl text-center border border-white/15">
+            <span id="lessonCount" class="block text-xl sm:text-2xl font-extrabold">0</span>
+            <span class="text-xs text-indigo-100">درس متاح</span>
+          </div>
+          <button id="refreshLessonsBtn" type="button" title="تحديث قائمة الدروس"
+            class="bg-white/15 hover:bg-white/25 text-white p-3 rounded-xl transition border border-white/15">
+            🔄
+          </button>
+        </div>
+      </div>
+
+      <!-- Search and Sort Bar -->
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <input id="searchInput" type="text" placeholder="ابحث عن اسم الدرس..."
+            class="w-full bg-white text-slate-800 placeholder-slate-400 rounded-xl px-4 py-3 text-sm sm:text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
+        </div>
+        <select id="sortSelect" aria-label="ترتيب الدروس"
+          class="bg-white text-slate-700 font-semibold rounded-xl px-4 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+          <option value="oldest">ترتيب الدروس (من الأول للأخير)</option>
+          <option value="newest">الأحدث أولاً</option>
+          <option value="alpha">ترتيب أبجدي (أ - ي)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl w-full mx-auto px-4 py-8 flex-1">
+    <!-- Loading State -->
+    <div id="loadingBox" class="hidden text-center py-12 text-slate-500 text-sm font-semibold">
+      جاري قراءة ملفات الدروس المرفوعة...
+    </div>
+
+    <!-- Lessons Grid (Populated automatically from sibling .html files) -->
+    <div id="lessonsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <!-- Empty State (Shown when no .html lessons are uploaded yet) -->
+    <div id="emptyState" class="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <div class="text-4xl mb-3">📂</div>
+      <h3 class="text-lg font-bold text-slate-700 mb-1">لا توجد دروس مرفوعة حالياً</h3>
+      <p id="emptyStateSub" class="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+        بمجرد وضع أي ملف درس بصيغة <code>.html</code> بجانب ملف <code>index.html</code> ورفعه، سيظهر الرابط الخاص به هنا تلقائياً باسمه.
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-400">
+    <div class="max-w-5xl mx-auto px-4 flex flex-wrap items-center justify-between gap-2">
+      <span>يتم عرض روابط الدروس المرفوعة تلقائياً</span>
+      <span id="repoInfoText" class="font-mono" dir="ltr"></span>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================================
+    // إعدادات اختيارية:
+    // إذا كنت ترفع الموقع على GitHub Pages (رابط ينتهي بـ github.io)، اترك الخانات فارغة
+    // وسيتعرف الكود على اسم حسابك واسم الـ Repo تلقائياً من الرابط!
+    // ============================================================================
+    const GITHUB_USER = "";   // اختياري: اكتب اسم حسابك على GitHub إذا كنت تستخدم دومين خارجي
+    const GITHUB_REPO = "";   // اختياري: اكتب اسم الـ Repo إذا كنت تستخدم دومين خارجي
+
+    let lessonsList = [];
+
+    // تنظيف اسم الملف وتحويله لاسم درس مقروء (مثال: "الدرس-الأول.html" -> "الدرس الأول")
+    function formatLessonName(filename) {
+      return decodeURIComponent(filename)
+        .replace(/\.html?$/i, "")
+        .replace(/[-_]+/g, " ")
+        .trim();
+    }
+
+    // استخراج رقم الدرس إن وجد لترتيبه بشكل سليم
+    function extractNumber(filename) {
+      const m = decodeURIComponent(filename).match(/(\d+)/);
+      return m ? parseInt(m[1], 10) : null;
+    }
+
+    // استنتاج بيانات GitHub تلقائياً من رابط الصفحة
+    function detectRepoFromUrl() {
+      let user = GITHUB_USER.trim();
+      let repo = GITHUB_REPO.trim();
+      let folder = "";
+
+      const host = window.location.hostname || "";
+      const parts = (window.location.pathname || "").split("/").filter(Boolean);
+
+      if (host.endsWith(".github.io")) {
+        if (!user) user = host.replace(".github.io", "");
+        if (!repo && parts.length > 0) repo = parts[0];
+        if (parts.length > 1) {
+          const sub = parts.slice(1).filter(p => !/\.html?$/i.test(p));
+          if (sub.length > 0) folder = sub.join("/");
+        }
+      }
+      return { user, repo, folder };
+    }
+
+    // عرض الدروس في الصفحة
+    function renderLessons() {
+      const grid = document.getElementById("lessonsGrid");
+      const emptyState = document.getElementById("emptyState");
+      const countEl = document.getElementById("lessonCount");
+      const searchVal = document.getElementById("searchInput").value.trim().toLowerCase();
+      const sortVal = document.getElementById("sortSelect").value;
+
+      let filtered = lessonsList.filter(item => {
+        const displayName = (item.title || formatLessonName(item.name)).toLowerCase();
+        return displayName.includes(searchVal) || item.name.toLowerCase().includes(searchVal);
+      });
+
+      filtered.sort((a, b) => {
+        const numA = extractNumber(a.name);
+        const numB = extractNumber(b.name);
+        if (sortVal === "newest") {
+          if (numA !== null && numB !== null && numA !== numB) return numB - numA;
+          return b.name.localeCompare(a.name, "ar", { numeric: true });
+        } else if (sortVal === "oldest") {
+          if (numA !== null && numB !== null && numA !== numB) return numA - numB;
+          return a.name.localeCompare(b.name, "ar", { numeric: true });
+        } else {
+          const nameA = a.title || formatLessonName(a.name);
+          const nameB = b.title || formatLessonName(b.name);
+          return nameA.localeCompare(nameB, "ar");
+        }
+      });
+
+      countEl.textContent = filtered.length;
+      grid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      filtered.forEach((item, index) => {
+        const displayTitle = item.title || formatLessonName(item.name);
+        const num = extractNumber(item.name) || (index + 1);
+
+        const card = document.createElement("a");
+        card.href = item.href;
+        card.className = "lesson-card bg-white rounded-2xl border border-slate-200 hover:border-indigo-400 p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-4 group";
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="inline-flex items-center justify-center bg-indigo-50 text-indigo-700 font-bold text-xs px-3 py-1 rounded-full">
+                درس ${num}
+              </span>
+            </div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition leading-snug mb-1">
+              ${displayTitle}
+            </h3>
+            <p class="text-xs text-slate-400 font-mono truncate" dir="ltr">${decodeURIComponent(item.name)}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-indigo-600 font-bold text-sm">
+            <span>فتح الدرس</span>
+            <span class="arrow-icon transition-transform">←</span>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    // قراءة ملفات .html الموجودة بجانب index.html تلقائياً
+    async function loadSiblingHtmlFiles() {
+      const loadingBox = document.getElementById("loadingBox");
+      const emptyState = document.getElementById("emptyState");
+      const repoInfoText = document.getElementById("repoInfoText");
+
+      const { user, repo, folder } = detectRepoFromUrl();
+
+      // 1. إذا كان مرفوعاً على GitHub Pages (أو تم تحديد اسم الحساب والـ Repo)
+      if (user && repo) {
+        loadingBox.classList.remove("hidden");
+        emptyState.classList.add("hidden");
+        repoInfoText.textContent = `${user}/${repo}`;
+
+        const apiUrl = `https://api.github.com/repos/${encodeURIComponent(user)}/${encodeURIComponent(repo)}/contents/${folder ? encodeURIComponent(folder) : ""}`;
+        try {
+          const res = await fetch(apiUrl);
+          if (res.ok) {
+            const files = await res.json();
+            if (Array.isArray(files)) {
+              lessonsList = files
+                .filter(f => f.type === "file" && /\.html?$/i.test(f.name) && f.name.toLowerCase() !== "index.html")
+                .map(f => ({
+                  name: f.name,
+                  href: encodeURI(f.name),
+                  title: ""
+                }));
+            }
+          }
+        } catch (err) {
+          lessonsList = [];
+        } finally {
+          loadingBox.classList.add("hidden");
+          renderLessons();
+        }
+        return;
+      }
+
+      // 2. محاولة القراءة المباشرة لو كان يعمل على سيرفر محلي يدعم فهرسة المجلد (مثل Live Server)
+      try {
+        const dirUrl = window.location.href.replace(/index\.html.*$/i, "");
+        const res = dirUrl.startsWith("http") ? await fetch(dirUrl) : { ok: false };
+        if (res.ok) {
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          const links = Array.from(doc.querySelectorAll("a[href]"));
+          const discovered = [];
+          links.forEach(a => {
+            const rawHref = a.getAttribute("href") || "";
+            const cleanFile = rawHref.split("/").pop().split("?")[0];
+            if (/\.html?$/i.test(cleanFile) && cleanFile.toLowerCase() !== "index.html") {
+              discovered.push({
+                name: decodeURIComponent(cleanFile),
+                href: cleanFile,
+                title: ""
+              });
+            }
+          });
+          if (discovered.length > 0) {
+            lessonsList = discovered;
+          }
+        }
+      } catch (e) {}
+
+      renderLessons();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("searchInput").addEventListener("input", renderLessons);
+      document.getElementById("sortSelect").addEventListener("change", renderLessons);
+      document.getElementById("refreshLessonsBtn").addEventListener("click", loadSiblingHtmlFiles);
+      loadSiblingHtmlFiles();
+    });
+  </script>
 </body>
 </html>
